@@ -1387,6 +1387,16 @@ class MyAesSiemStack(cdk.Stack):
         s3_log.add_event_notification(
             aws_s3.EventType.OBJECT_CREATED, notification)
 
+        if additional_buckets:
+            for s3_bucket_name in additional_buckets:
+                bucket = aws_s3.Bucket.from_bucket_name(
+                    self,
+                    id=s3_bucket_name,
+                    bucket_name=s3_bucket_name
+                )
+                bucket.add_event_notification(
+                    aws_s3.EventType.OBJECT_CREATED, notification)
+
         # Download geoip to S3 once by executing lambda_geo
         get_geodb = aws_cloudformation.CfnCustomResource(
             self, 'ExecLambdaGeoipDownloader',

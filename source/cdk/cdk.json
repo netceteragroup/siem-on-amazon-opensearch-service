@@ -1,0 +1,31 @@
+{
+    "app": "python3 cnn.py",
+    "versionReporting": false,
+    "context": {
+        "aws-cdk:enableDiffNoFail": "true",
+        "vpc_type_comment": "vpc_type is new or import",
+        "vpc_type": "new",
+        "imported_vpc_id": "vpc-abcd1234",
+        "imported_vpc_subnets": ["", "", ""],
+        "imported_vpc_subnets_sample": ["subnet-example1111111111", "subnet-example2222222222", "subnet-example3333333333"],
+        "new_vpc_nw_cidr_block": "172.30.0.0/24",
+        "new_vpc_subnet_cidr_mask": "26",
+        "aes_domain_name": "cnn-siem",
+        "s3_bucket_name":{
+            "log": "cnn-core-log-euc1-s3-cnn-siem-log",
+            "snapshot": "cnn-core-log-euc1-s3-cnn-siem-snapshot",
+            "geo": "cnn-core-log-euc1-s3-cnn-siem-geo"
+        },
+        "kms_cmk_alias": "aes-siem-key",
+        "organizations": {
+            "org_id": "o-9jydjisnt6",
+            "management_id": "264034061693",
+            "member_ids": ["755880545038","617637111105"]
+        },
+        "no_organizations": {
+            "aws_accounts": []
+        },
+        "additional_s3_buckets": ["cn-core-log-euc1-s3-accesslogs", "cn-core-log-euc1-s3-logging"],
+        "additional_kms_cmks": []
+    }
+}
