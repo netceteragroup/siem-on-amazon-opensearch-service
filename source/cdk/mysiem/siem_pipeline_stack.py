@@ -29,14 +29,15 @@ class SiemPipelineStack(cdk.Stack):
 
         branchName = "cnn-deployment"
         githubUrl = "netceteragroup/siem-on-amazon-opensearch-service"
-        source = CodePipelineSource.git_hub(githubUrl, branchName)
+        githubConnection = "arn:aws:codestar-connections:eu-central-1:755880545038:connection/be70a04d-ba82-4574-ade5-9e5bc3685307"
+        source = CodePipelineSource.connection(repo_string=githubUrl, branch=branchName, connection_arn=githubConnection)
         pipeline = CodePipeline(self, "SiemPipelineStack",
                                 pipeline_name="SiemPipelineStack",
                                 cross_account_keys=True,
                                 synth=ShellStep("Synth",
                                                  input=source,
                                                  install_commands=[
-                                                     "cd source/cdk",
+                                                     "cd source/cdk"
                                                      "npm install -g aws-cdk",
                                                      "pip install -r requirements.txt"
                                                  ],

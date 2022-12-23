@@ -1,5 +1,18 @@
 hi
 
+# Prerequisites
+Setup Github Connection in AWS Logging Account
+https://docs.aws.amazon.com/codepipeline/latest/userguide/connections-github.html
+
+# Deploy SIEM from Workmachine
+
+Point to app.py in /source/cdk/cdk.json
+
+Execute:
+$./deployment/deploySiem.sh
+
+
+
 
 CDK
 cd /source/cdk
@@ -12,18 +25,5 @@ Source environment
 source ../../.venv/bin/activate
 
 export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --output text --query Account)
-Bootstrap pipeline
-aws://$(aws sts get-caller-identity --output text --query Account)/eu-central-1
 
-cdk bootstrap --tags map-migrated=d-server-002yz80gjzjqaa
-
-1. Bootstrap:
-export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
-cdk bootstrap --cloudformation-execution-policies arn\:aws\:iam::aws\:policy/AdministratorAccess aws://$ACCOUNT_ID/eu-central-1
-
-2. Synthi
-cdk synth SiemPipelineStack
-
-3. Deploy 
-cdk deploy SiemPipelineStack
 
