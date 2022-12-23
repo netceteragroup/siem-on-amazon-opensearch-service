@@ -19,4 +19,5 @@ This should be changed so that it has access on the nca organization repository 
 
 
 ## Problem 1:  SiemPipelineStack-SiemPipelineStackPipelineBuildSy
-Attached AdminAccess policy 
+Attached AdministratorAccess policy manually to SiemPipelineStack-SiemPipelineStackPipelineBuildSy
+This should be done in code and only for the actions required.

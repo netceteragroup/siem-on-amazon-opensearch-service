@@ -6,7 +6,7 @@ pwd
 
 cd cdk-solution-helper/
 
-#chmod +x ./step1-build-lambda-pkg.sh && ./step1-build-lambda-pkg.sh
+chmod +x ./step1-build-lambda-pkg.sh && ./step1-build-lambda-pkg.sh
 #chmod +x ./step2-setup-cdk-env.sh && ./step2-setup-cdk-env.sh
 source ~/.bashrc
 cd ../../

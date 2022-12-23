@@ -20,17 +20,16 @@ class SiemPipelineStack(cdk.Stack):
         source = CodePipelineSource.connection(repo_string=githubUrl, branch=branchName, connection_arn=githubConnection)
         pipeline = CodePipeline(self, "SiemPipelineStack",
                                 pipeline_name="SiemPipelineStack",
-                                cross_account_keys=True,
                                 synth=ShellStep("Synth",
                                                  input=source,
                                                  install_commands=[
                                                      "cd source/cdk",
                                                      "npm install -g aws-cdk",
-                                                     "pip install -r requirements.txt"
+                                                     "pip install -r requirements.txt",
                                                  ],
-                                                 commands=["cdk synth", "pwd"],
+                                                 commands=["cdk synth"],
                                                  primary_output_directory="source/cdk/cdk.out"
-                                                 )
-                                 )
+                                                )
+                                )
         stage = SiemStage(self, "SiemStageProd")
         pipeline.add_stage(stage)
