@@ -25,7 +25,7 @@ class SiemPipelineStack(cdk.Stack):
                                                  install_commands=[
                                                      "cd deployment/cdk-solution-helper",
                                                      "chmod +x step1-build-lambda-pkg.sh",
-                                                     "./deployment/cdk-solution-helper/step1-build-lambda-pkg.sh",
+                                                     ".step1-build-lambda-pkg.sh",
                                                      "cd ../../source/cdk"
                                                      "npm install -g aws-cdk",
                                                      "pip install -r requirements.txt",
