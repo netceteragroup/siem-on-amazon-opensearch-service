@@ -37,7 +37,7 @@ class SiemPipelineStack(cdk.Stack):
                                 synth=ShellStep("Synth",
                                                  input=source,
                                                  install_commands=[
-                                                     "cd source/cdk"
+                                                     "cd source/cdk",
                                                      "npm install -g aws-cdk",
                                                      "pip install -r requirements.txt"
                                                  ],
