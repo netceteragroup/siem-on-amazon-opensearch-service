@@ -29,7 +29,7 @@ class SiemPipelineStack(cdk.Stack):
                                                      "pip install -r requirements.txt"
                                                  ],
                                                  commands=["cdk synth", "pwd"],
-                                                 primary_output_directory="source/cdk"
+                                                 primary_output_directory="source/cdk/cdk.out"
                                                  )
                                  )
         stage = SiemStage(self, "SiemStageProd")
