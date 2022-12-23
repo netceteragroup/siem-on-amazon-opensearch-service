@@ -46,22 +46,22 @@ cdk.out
 
 # deploy
 deployment/open-source/
-add_pandas_layer.zip
-es_loader.zip
-es_loader_stopper.zip
-geoip_downloader.zip
-ioc_database.zip
-deploy_es.zip
-index_china.py
-restore_samplelog.zip
-siemlog.zip
-index_metrics_exporter.zip
-user.ini
-aes.ini
-global-s3-assets
-regional-s3-assets
-Lambda*.zip
-dashboard.ndjson.zip
+#add_pandas_layer.zip
+#es_loader.zip
+#es_loader_stopper.zip
+#geoip_downloader.zip
+#ioc_database.zip
+#deploy_es.zip
+#index_china.py
+#restore_samplelog.zip
+#siemlog.zip
+#index_metrics_exporter.zip
+#user.ini
+#aes.ini
+#global-s3-assets
+#regional-s3-assets
+#Lambda*.zip
+#dashboard.ndjson.zip
 
 # working files
 .lambda38/
