@@ -28,7 +28,7 @@ class SiemPipelineStack(cdk.Stack):
                                                      "npm install -g aws-cdk",
                                                      "pip install -r requirements.txt"
                                                  ],
-                                                 commands=["cdk synth -o source/cdk", "pwd"],
+                                                 commands=["cdk synth", "pwd"],
                                                  primary_output_directory="source/cdk"
                                                  )
                                  )
