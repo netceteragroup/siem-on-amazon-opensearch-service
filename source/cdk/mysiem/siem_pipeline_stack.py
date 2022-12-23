@@ -28,7 +28,8 @@ class SiemPipelineStack(cdk.Stack):
                                                      "npm install -g aws-cdk",
                                                      "pip install -r requirements.txt"
                                                  ],
-                                                 commands=["cdk synth -v"]
+                                                 commands=["cdk synth -o source/cdk", "pwd"],
+                                                 primary_output_directory="source/cdk"
                                                  )
                                  )
         stage = SiemStage(self, "SiemStageProd")
