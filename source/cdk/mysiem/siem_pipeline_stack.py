@@ -5,19 +5,6 @@ from aws_cdk.pipelines import (
     CodePipelineSource,
     ShellStep
 )
-from aws_cdk import (
-    Stack,
-    StackProps,
-    aws_codecommit as codecommit
-)
-from aws_cdk.aws_iam import (
-    ManagedPolicy,
-    Role,
-    ServicePrincipal,
-    PolicyStatement,
-    Effect,
-    AnyPrincipal
-)
 
 from .siem_stage import SiemStage
 
@@ -41,7 +28,7 @@ class SiemPipelineStack(cdk.Stack):
                                                      "npm install -g aws-cdk",
                                                      "pip install -r requirements.txt"
                                                  ],
-                                                 commands=["cdk synth"]
+                                                 commands=["cdk synth -v"]
                                                  )
                                  )
         stage = SiemStage(self, "SiemStageProd")
