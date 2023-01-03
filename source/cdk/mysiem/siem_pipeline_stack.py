@@ -16,7 +16,7 @@ class SiemPipelineStack(cdk.Stack):
 
         branchName = "cnn-deployment"
         githubUrl = "netceteragroup/siem-on-amazon-opensearch-service"
-        githubConnection = "arn:aws:codestar-connections:eu-central-1:755880545038:connection/be70a04d-ba82-4574-ade5-9e5bc3685307"
+        githubConnection = "arn:aws:codestar-connections:eu-central-1:755880545038:connection/b9bb0df9-b8ab-4cf6-9c8d-dbad0e973e9e"
         source = CodePipelineSource.connection(repo_string=githubUrl, branch=branchName, connection_arn=githubConnection)
         pipeline = CodePipeline(self, "SiemPipelineStack",
                                 pipeline_name="SiemPipelineStack",

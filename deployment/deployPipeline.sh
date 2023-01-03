@@ -2,6 +2,8 @@
 
 export CDK_DEFAULT_ACCOUNT=755880545038
 export AWS_DEFAULT_REGION=eu-central-1
+export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --output text --query Account)
+export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 pwd
 
 cd cdk-solution-helper/
@@ -12,8 +14,6 @@ source ~/.bashrc
 cd ../../
 source .venv/bin/activate
 cd source/cdk
-export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --output text --query Account)
-export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 cdk bootstrap --tags map-migrated=d-server-002yz80gjzjqaa --cloudformation-execution-policies arn\:aws\:iam::aws\:policy/AdministratorAccess aws://$ACCOUNT_ID/eu-central-1
 cdk context --j
 cdk synth SiemPipelineStack
