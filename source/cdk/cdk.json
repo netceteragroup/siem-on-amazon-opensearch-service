@@ -25,7 +25,12 @@
         "no_organizations": {
             "aws_accounts": []
         },
-        "additional_s3_buckets": ["cn-core-log-euc1-s3-accesslogs", "cn-core-log-euc1-s3-logging"],
+        "additional_s3_buckets": [
+            "cn-core-log-euc1-s3-accesslogs",
+            "cn-core-log-euc1-s3-logging",
+            "cn-core-log-euc1-s3-config",
+            "cn-core-log-euc1-s3-cloudtrail-trails"
+        ],
         "additional_kms_cmks": []
     }
 }
