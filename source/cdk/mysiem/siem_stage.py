@@ -13,7 +13,7 @@ class SiemStage(cdk.Stage):
         account = "755880545038"
         region = "eu-central-1"
         MyAesSiemStack(self,
-                       id='MyAesSiemStack',
+                       id='CNNAesSiemStack',
                        description=f'SIEM on Amazon OpenSearch Service 2.9.0',
                        env=cdk.Environment(account=account,region=region)
                        )

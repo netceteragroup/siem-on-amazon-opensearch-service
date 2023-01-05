@@ -31,5 +31,5 @@ class SiemPipelineStack(cdk.Stack):
                                                  primary_output_directory="source/cdk/cdk.out"
                                                 )
                                 )
-        stage = SiemStage(self, "SiemStageProd")
+        stage = SiemStage(self, "DeploySiemStageProd")
         pipeline.add_stage(stage)

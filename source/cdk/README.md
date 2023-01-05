@@ -48,7 +48,7 @@ The security group sg-0da89a528c9caae23	aes-siem-vpc-sg required to open a ssh p
 The pipeline should build the lambda resources ZIP and deploy the zip. As there where issues on the path i pushed the ZIPs. 
 
 
-# Confiugre Loader Lambda
+# Configure Loader Lambda
 
 I added a user.ini config file manually, its also in the source of the lambda, but we should create a separate lambda layer for this.  
 According to https://github.com/netceteragroup/siem-on-amazon-opensearch-service/blob/main/docs/configure_siem.md

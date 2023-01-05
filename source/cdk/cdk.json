@@ -4,7 +4,7 @@
     "context": {
         "aws-cdk:enableDiffNoFail": "true",
         "vpc_type_comment": "vpc_type is new or import",
-        "vpc_type": "import",
+        "vpc_type": "new",
         "imported_vpc_id": "vpc-0767b56c33fffe2de",
         "imported_vpc_subnets": ["subnet-049c606c6b3bdc807"],
         "new_vpc_nw_cidr_block": "172.30.0.0/24",
