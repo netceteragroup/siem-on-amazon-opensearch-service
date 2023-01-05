@@ -1,0 +1,49 @@
+{
+  "policy": {
+    "policy_id": "deletes3index",
+    "description": "A policy deletes indexes.",
+    "last_updated_time": 1672845204090,
+    "schema_version": 16,
+    "error_notification": null,
+    "default_state": "hot",
+    "states": [
+      {
+        "name": "hot",
+        "actions": [],
+        "transitions": [
+          {
+            "state_name": "yy-delete",
+            "conditions": {
+              "min_index_age": "1m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "yy-delete",
+        "actions": [
+          {
+            "retry": {
+              "count": 3,
+              "backoff": "exponential",
+              "delay": "1m"
+            },
+            "delete": {}
+          }
+        ],
+        "transitions": []
+      }
+    ],
+    "ism_template": [
+      {
+        "index_patterns": [
+          "log-*-20*"
+        ],
+        "priority": 1,
+        "last_updated_time": 1672844988025
+      }
+    ]
+  }
+}
+
+Failed to delete the policy, [cluster_block_exception] index [.opendistro-ism-config] blocked by: [TOO_MANY_REQUESTS/12/disk usage exceeded flood-stage watermark, index has read-only-allow-delete block];

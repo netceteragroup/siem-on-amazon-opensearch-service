@@ -4,13 +4,12 @@
     "context": {
         "aws-cdk:enableDiffNoFail": "true",
         "vpc_type_comment": "vpc_type is new or import",
-        "vpc_type": "new",
-        "imported_vpc_id": "vpc-abcd1234",
-        "imported_vpc_subnets": ["", "", ""],
-        "imported_vpc_subnets_sample": ["subnet-example1111111111", "subnet-example2222222222", "subnet-example3333333333"],
+        "vpc_type": "import",
+        "imported_vpc_id": "vpc-0767b56c33fffe2de",
+        "imported_vpc_subnets": ["subnet-049c606c6b3bdc807"],
         "new_vpc_nw_cidr_block": "172.30.0.0/24",
         "new_vpc_subnet_cidr_mask": "26",
-        "aes_domain_name": "cnn-siem",
+        "aes_domain_name": "nca-siem",
         "s3_bucket_name":{
             "log": "cnn-core-log-euc1-s3-cnn-siem-log",
             "snapshot": "cnn-core-log-euc1-s3-cnn-siem-snapshot",
@@ -26,9 +25,7 @@
             "aws_accounts": []
         },
         "additional_s3_buckets": [
-            "cn-core-log-euc1-s3-accesslogs",
             "cn-core-log-euc1-s3-logging",
-            "cn-core-log-euc1-s3-config",
             "cn-core-log-euc1-s3-cloudtrail-trails"
         ],
         "additional_kms_cmks": []
