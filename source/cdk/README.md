@@ -18,6 +18,13 @@ Push artifacts to github
 $./deployment/deployPipeline.sh
 4. Manually trigger pipeline
 
+## Redploy and start from scratch
+When you want to delete the OpenSearch Stack in Cloudformation some ressources wont be delted so you need to manualy perform this. 
+Delete the Stack (can take up some time if there are issues)
+Delete all s3 buckets
+Delete the KMS Keys
+Delete the LogGroups
+
 # Manual changes to the Pipeline Setup
 
 ## Gihub Connection
@@ -40,9 +47,11 @@ Instructions on how to get certificates and credentials can be found here:
 smb://evs-02.one.nca/nca_g/projects/nca-459-7/confidential/doc/aws
 
 ## Problem : Manual Internet Gateway setup
-An 	igw-062e82276df3548a1 had to be setup manually.
-The route to IP  5.149.3.0/24  from the gw-062e82276df3548a1 had to be setup in the main vpc route table rtb-07ef8c277a88c7d7a.
-The security group sg-0da89a528c9caae23	aes-siem-vpc-sg required to open a ssh port 22 from ip 5.149.3.0/24 to SSH into tunnelhost
+An internet gateway had to be setup manually and attached to the VPC.
+The route to IP 5.149.3.0/24 from the internete gateway had to be setup in the main vpc route table.
+All subnets need routes from 0.0.0.0/0 to the internet gateway.
+The security group of the VPC required to open the ssh port 22 from cidr range 5.149.3.0/24 to create an tunnel over the EC2 tunnelhost to the Dashboard.
+The EC2 tunnelhost requires a public IP and should be attached to the same VPC and Subnet as opensearch.
 
 ## Problem :  Lambda ZIP on github
 The pipeline should build the lambda resources ZIP and deploy the zip. As there where issues on the path i pushed the ZIPs. 
