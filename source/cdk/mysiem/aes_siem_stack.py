@@ -488,12 +488,13 @@ class MyAesSiemStack(cdk.Stack):
             sg_vpc_opt.deletion_policy = cdk.CfnDeletionPolicy.RETAIN
 
             # VPC Endpoint
-            vpc_aes_siem.add_gateway_endpoint(
-                'S3Endpoint', service=aws_ec2.GatewayVpcEndpointAwsService.S3,
-                subnets=[vpc_subnets])
-            vpc_aes_siem.add_interface_endpoint(
-                'SQSEndpoint', security_groups=[sg_vpc_aes_siem],
-                service=aws_ec2.InterfaceVpcEndpointAwsService.SQS,)
+            if vpc_type == "new":
+                vpc_aes_siem.add_gateway_endpoint(
+                    'S3Endpoint', service=aws_ec2.GatewayVpcEndpointAwsService.S3,
+                    subnets=[vpc_subnets])
+                vpc_aes_siem.add_interface_endpoint(
+                    'SQSEndpoint', security_groups=[sg_vpc_aes_siem],
+                    service=aws_ec2.InterfaceVpcEndpointAwsService.SQS,)
         else:
             is_vpc = False
 

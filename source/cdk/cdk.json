@@ -5,6 +5,7 @@
         "aws-cdk:enableDiffNoFail": "true",
         "vpc_type_comment": "vpc_type is new or import",
         "vpc_type": "import",
+        "create_vpc_endpoint" : false,
         "imported_vpc_id": "vpc-00d724a1228172f25",
         "imported_vpc_subnets": [
             "subnet-056b7828fb2ea713d", "subnet-0c66d3a71de7819d0", "subnet-0da063281be955132"

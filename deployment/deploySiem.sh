@@ -13,4 +13,4 @@ source .venv/bin/activate
 cd source/cdk
 cdk bootstrap
 cdk context  --j
-cdk deploy --no-rollback
+cdk deploy --no-rollback --tags map-migrated=d-server-002yz80gjzjqaa
