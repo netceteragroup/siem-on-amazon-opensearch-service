@@ -17,4 +17,4 @@ cd source/cdk
 cdk bootstrap --tags map-migrated=d-server-002yz80gjzjqaa --cloudformation-execution-policies arn\:aws\:iam::aws\:policy/AdministratorAccess aws://$ACCOUNT_ID/eu-central-1
 cdk context --j
 cdk synth SiemPipelineStack
-cdk deploy SiemPipelineStack --no-rollback
+cdk deploy SiemPipelineStack --no-rollback --parameters SnsEmail=soc-alerts@infosec.netcetera.com
