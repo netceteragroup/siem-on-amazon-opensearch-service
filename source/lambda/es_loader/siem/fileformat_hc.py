@@ -18,7 +18,10 @@ from siem import FileFormatBase
 
 logger = Logger(child=True)
 
-
+# the hc filetype is introduced to handle messages copied by the Helecloud lambda functions into the s3 logging bucket
+# the hc filetype flag !cannot! be combined with the via_cwl flag!
+# the hc filetype flag can currently only handle JSON logs and VPCFlow logs in CVS format! all other formats will fail
+# more formats can be added by adding IF statements for each logtype to the convert_lograw_to_dict function
 class FileFormatHc(FileFormatBase):
     def __init__(self, rawdata=None, logconfig=None, logtype=None):
         super().__init__(rawdata, logconfig, logtype)
