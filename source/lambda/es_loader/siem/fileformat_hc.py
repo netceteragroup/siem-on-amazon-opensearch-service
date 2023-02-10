@@ -50,7 +50,6 @@ class FileFormatHc(FileFormatBase):
     def convert_lograw_to_dict(self, lograw, logconfig=None):
         try:
             if self.logtype == 'vpcflowlogs':
-                logger.error("we need to fix these logs: " + str(lograw))
                 vpc_header = ("version", "account-id", "interface-id",
                               "srcaddr", "dstaddr", "srcport", "dstport",
                               "protocol", "packets", "bytes", "start",
@@ -62,7 +61,6 @@ class FileFormatHc(FileFormatBase):
                     lograw_tuple = lograw.split()
 
                 logdict = dict(zip(vpc_header, lograw_tuple))
-                logger.error("fixed them: " + str(logdict))
                 return logdict
 
             logdict = json.loads(lograw)
