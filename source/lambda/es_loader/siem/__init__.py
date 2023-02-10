@@ -31,6 +31,7 @@ from siem.fileformat_parquet import FileFormatParquet
 from siem.fileformat_text import FileFormatText
 from siem.fileformat_winevtxml import FileFormatWinEvtXml
 from siem.fileformat_xml import FileFormatXml
+from siem.fileformat_hc import FileFormatHc
 
 logger = Logger(child=True)
 
@@ -210,6 +211,8 @@ class LogS3:
                 self.rawdata, self.logconfig, self.logtype)
         elif self.file_format == 'xml':
             return FileFormatXml(self.rawdata, self.logconfig, self.logtype)
+        elif self.file_format == 'hc':
+            return FileFormatHc(self.rawdata, self.logconfig, self.logtype)
         elif self.file_format == 'cef':
             return FileFormatCef(self.rawdata, self.logconfig, self.logtype)
         elif not self.file_format:
