@@ -311,27 +311,6 @@ class LogS3:
 
         return line_num
 
-    def log_count_hc_log(self):
-        body: str = self.__rawdata.read()
-        if "message" in body:
-            return 1
-        else:
-            return 0
-
-    def extract_hc_log(self, logmeta={}):
-        decoder = json.JSONDecoder()
-        self.__rawdata.seek(0)
-        body: str = self.__rawdata.read()
-        _w = json.decoder.WHITESPACE.match
-        json_body = decoder.decode(body)
-
-        for logEntry in json_body:
-            if 'message' in logEntry:
-                hc_logmeta = copy.copy(logmeta)
-                hc_logmeta['hc_id'] = logEntry['id']
-                hc_logmeta['hc_timestamp'] = logEntry['timestamp']
-                yield (logEntry['message'], hc_logmeta)
-
     def extract_cwl_log(self, start, end, logmeta={}):
         idx: int = 0
         line_num: int = 0
