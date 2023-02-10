@@ -61,7 +61,6 @@ class LogS3:
         if self.is_ignored:
             return None
         self.via_cwl = self.logconfig['via_cwl']
-        self.via_hc = self.logconfig['via_hc']
         self.via_firelens = self.logconfig['via_firelens']
         self.file_format = self.logconfig['file_format']
         self.max_log_count = self.logconfig['max_log_count']
@@ -125,8 +124,6 @@ class LogS3:
         if self.end_number == 0:
             if self.via_cwl:
                 log_count = self.log_count_cwl_log()
-            elif self.via_hc:
-                log_count = self.log_count_hc_log()
             elif self.via_firelens:
                 log_count = len(self.rawdata.readlines())
             else:
@@ -239,10 +236,6 @@ class LogS3:
                         yield (json.dumps(record), record, logmeta)
                 else:
                     yield (lograw, logdict, logmeta)
-        elif self.via_hc:
-            for lograw, logmeta in self.extract_hc_log(logmeta):
-                logdict = self.rawfile_instacne.convert_lograw_to_dict(lograw)
-                yield (lograw, logdict, logmeta)
         elif self.via_firelens:
             for lograw, logdict, logmeta in self.extract_firelens_log(
                     start, end, logmeta):
