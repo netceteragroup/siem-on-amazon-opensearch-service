@@ -31,6 +31,7 @@ from siem.fileformat_parquet import FileFormatParquet
 from siem.fileformat_text import FileFormatText
 from siem.fileformat_winevtxml import FileFormatWinEvtXml
 from siem.fileformat_xml import FileFormatXml
+from siem.fileformat_vpc import FileFormatVPCFlow
 
 logger = Logger(child=True)
 
@@ -60,6 +61,7 @@ class LogS3:
         if self.is_ignored:
             return None
         self.via_cwl = self.logconfig['via_cwl']
+        self.via_hc = self.logconfig['via_hc']
         self.via_firelens = self.logconfig['via_firelens']
         self.file_format = self.logconfig['file_format']
         self.max_log_count = self.logconfig['max_log_count']
@@ -123,6 +125,8 @@ class LogS3:
         if self.end_number == 0:
             if self.via_cwl:
                 log_count = self.log_count_cwl_log()
+            elif self.via_hc:
+                log_count = self.log_count_hc_log()
             elif self.via_firelens:
                 log_count = len(self.rawdata.readlines())
             else:
@@ -207,6 +211,8 @@ class LogS3:
                 self.rawdata, self.logconfig, self.logtype)
         elif self.file_format == 'xml':
             return FileFormatXml(self.rawdata, self.logconfig, self.logtype)
+        elif self.file_format == 'vpcflow':
+            return FileFormatVPCFlow(self.rawdata, self.logconfig, self.logtype)
         elif self.file_format == 'cef':
             return FileFormatCef(self.rawdata, self.logconfig, self.logtype)
         elif not self.file_format:
@@ -229,12 +235,14 @@ class LogS3:
             for lograw, logmeta in self.extract_cwl_log(start, end, logmeta):
                 logdict = self.rawfile_instacne.convert_lograw_to_dict(lograw)
                 if delimiter and (delimiter in logdict):
-                    #logger.error('we are delimiting on ' + str(delimiter))
                     for record in logdict[delimiter]:
-                        #logger.error('we are delimiting with ' + str(record))
                         yield (json.dumps(record), record, logmeta)
                 else:
                     yield (lograw, logdict, logmeta)
+        elif self.via_hc:
+            for lograw, logmeta in self.extract_hc_log(logmeta):
+                logdict = self.rawfile_instacne.convert_lograw_to_dict(lograw)
+                yield (lograw, logdict, logmeta)
         elif self.via_firelens:
             for lograw, logdict, logmeta in self.extract_firelens_log(
                     start, end, logmeta):
@@ -288,6 +296,27 @@ class LogS3:
             return dt
         else:
             return None
+
+    def log_count_hc_log(self):
+        body: str = self.__rawdata.read()
+        if "message" in body:
+            return 1
+        else:
+            return 0
+
+    def extract_hc_log(self, logmeta={}):
+        decoder = json.JSONDecoder()
+        self.__rawdata.seek(0)
+        body: str = self.__rawdata.read()
+        _w = json.decoder.WHITESPACE.match
+        json_body = decoder.decode(body)
+
+        for logEntry in json_body:
+            if 'message' in logEntry:
+                hc_logmeta = copy.copy(logmeta)
+                hc_logmeta['hc_id'] = logEntry['id']
+                hc_logmeta['hc_timestamp'] = logEntry['timestamp']
+                yield (logEntry['message'], hc_logmeta)
 
     def log_count_cwl_log(self):
         idx: int = 0
