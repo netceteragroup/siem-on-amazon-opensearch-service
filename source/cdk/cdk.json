@@ -29,7 +29,8 @@
         },
         "additional_s3_buckets": [
             "cn-core-log-euc1-s3-logging",
-            "cn-core-log-euc1-s3-cloudtrail-trails"
+            "cn-core-log-euc1-s3-cloudtrail-trails",
+            "cn-core-log-euc1-s3-accesslogs"
         ],
         "additional_kms_cmks": []
     }
