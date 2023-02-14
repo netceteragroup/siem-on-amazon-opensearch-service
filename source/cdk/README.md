@@ -14,14 +14,15 @@ Push artifacts to github
 
 1. The pipeline source can be adapted in /source/cdk/mysiem/siem_pipeline_stack.py
 2. Push all changes to Github
-3. Bootstrap Pipeline to AWS Logging Account
+3. Bootstrap/Deploy the SIEM Pipeline Stack into the AWS Logging Account by executing:
 $./deployment/deployPipeline.sh
-4. Manually trigger pipeline
+4. The SIEM Pipeline should run afterwards but can also be triggered manually
 
 ## Redploy and start from scratch
 When you want to delete the OpenSearch Stack in Cloudformation some ressources wont be delted so you need to manualy perform this. 
 Delete the Stack (can take up some time if there are issues)
-Delete all s3 buckets
+Delete all s3 buckets created by SIEM
+Delete all s3 buckets notifications set on the linked buckets
 Delete the KMS Keys
 Delete the LogGroups
 
@@ -40,22 +41,14 @@ This should be done in code and only for the actions required.
 
 ## Dashboard Access
 
-An SSH Tunnel is required to access the dasbhoard. Its done according to:
-https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vpc.html
 
-Instructions on how to get certificates and credentials can be found here:
+We have currently not setup a propper access control, only a static admin user is setup.
+
+The credentials can be found here:
 smb://evs-02.one.nca/nca_g/projects/nca-459-7/confidential/doc/aws
-
-## Problem : Manual Internet Gateway setup
-An internet gateway had to be setup manually and attached to the VPC.
-The route to IP 5.149.3.0/24 from the internete gateway had to be setup in the main vpc route table.
-All subnets need routes from 0.0.0.0/0 to the internet gateway.
-The security group of the VPC required to open the ssh port 22 from cidr range 5.149.3.0/24 to create an tunnel over the EC2 tunnelhost to the Dashboard.
-The EC2 tunnelhost requires a public IP and should be attached to the same VPC and Subnet as opensearch.
 
 ## Problem :  Lambda ZIP on github
 The pipeline should build the lambda resources ZIP and deploy the zip. As there where issues on the path i pushed the ZIPs. 
-
 
 # Configure Loader Lambda
 
@@ -89,7 +82,7 @@ cn-core-log-euc1-s3-logging/CWLogs/835193632749/eks_cnn-nip-prod-euc1-eks_contai
 
 
 ### Config 
-Integrated without an issue.
+Works over Security Hub integration
 
 ### S3 AccessLogs
 Integrated without an issue.
@@ -100,9 +93,7 @@ Integrated without an issue.
 
 ### Guard Duty
 
-GuardDuty export to s3: Requires according permissions to access bucket, kms etc.
-destination bucket: arn:aws:s3:::cn-core-log-euc1-s3-logging
-KMS key used: arn:aws:kms:eu-central-1:264034061693:key/2d16c006-7ff7-44fa-b1c8-72a6c030573d
+Works over Security Hub integration
 
 ### Security Hub
 We have to setup the log forwarding as it is described here:
