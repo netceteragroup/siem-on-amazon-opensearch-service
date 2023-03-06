@@ -5,12 +5,12 @@ from aws_cdk.pipelines import (
     CodePipelineSource,
     ShellStep
 )
+from aws_cdk import aws_iam as iam
 
 from .siem_stage import SiemStage
 
 
 class SiemPipelineStack(cdk.Stack):
-
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
@@ -32,4 +32,18 @@ class SiemPipelineStack(cdk.Stack):
                                                 )
                                 )
         stage = SiemStage(self, "DeploySiemStageProd")
+
+        role = iam.Role.from_role_arn(self, "Role", "arn:aws:iam::755880545038:role/SiemPipelineStack-SiemPipelineStackPipelineBuildSy-7XPJBUBX66V4")
+        role.add_to_principal_policy(
+            iam.PolicyStatement(
+                actions=["ec2:*"],
+                resources=["*"]
+            )
+        )
+        role.add_to_principal_policy(
+            iam.PolicyStatement(
+                actions=["iam:ListRoles"],
+                resources=["arn:aws:iam::755880545038:role/aws-service-role/opensearchservice.amazonaws.com/*"]
+            )
+        )
         pipeline.add_stage(stage)
