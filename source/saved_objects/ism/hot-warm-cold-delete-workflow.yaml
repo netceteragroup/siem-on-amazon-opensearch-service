@@ -1,0 +1,137 @@
+{
+  "id": "aws-siem-hot-warm-cold-delete-workflow",
+  "seqNo": 390107,
+  "primaryTerm": 1,
+  "policy": {
+    "policy_id": "aws-siem-hot-warm-cold-delete-workflow",
+    "description": "The AWS hot-warm-cold-delete workflow.",
+    "last_updated_time": 1677685305609,
+    "schema_version": 16,
+    "error_notification": null,
+    "default_state": "hot",
+    "states": [
+      {
+        "name": "rollover",
+        "actions": [
+          {
+            "retry": {
+              "count": 3,
+              "backoff": "exponential",
+              "delay": "1m"
+            },
+            "rollover": {
+              "min_size": "150gb"
+            }
+          }
+        ],
+        "transitions": []
+      },
+      {
+        "name": "hot",
+        "actions": [],
+        "transitions": [
+          {
+            "state_name": "snapshot",
+            "conditions": {
+              "min_index_age": "2d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "snapshot",
+        "actions": [
+          {
+            "retry": {
+              "count": 5,
+              "backoff": "exponential",
+              "delay": "30m"
+            },
+            "snapshot": {
+              "repository": "domain-snapshot-repository",
+              "snapshot": "ism-snapshot"
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "state_name": "warm",
+            "conditions": {
+              "min_index_age": "3d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "warm",
+        "actions": [
+          {
+            "retry": {
+              "count": 5,
+              "backoff": "exponential",
+              "delay": "1h"
+            },
+            "warm_migration": {}
+          }
+        ],
+        "transitions": [
+          {
+            "state_name": "cold",
+            "conditions": {
+              "min_index_age": "30d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "cold",
+        "actions": [
+          {
+            "retry": {
+              "count": 5,
+              "backoff": "exponential",
+              "delay": "1h"
+            },
+            "cold_migration": {
+              "start_time": null,
+              "end_time": null,
+              "timestamp_field": "@timestamp",
+              "ignore": "none"
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "state_name": "delete",
+            "conditions": {
+              "min_index_age": "365d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "delete",
+        "actions": [
+          {
+            "retry": {
+              "count": 3,
+              "backoff": "exponential",
+              "delay": "1m"
+            },
+            "cold_delete": {}
+          }
+        ],
+        "transitions": []
+      }
+    ],
+    "ism_template": [
+      {
+        "index_patterns": [
+            "log-aws-*"
+        ],
+        "priority": 100,
+        "last_updated_time": 1676897772061
+      }
+    ]
+  }
+}
