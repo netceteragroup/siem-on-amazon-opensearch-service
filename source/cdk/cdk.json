@@ -32,6 +32,6 @@
             "cn-core-log-euc1-s3-cloudtrail-trails",
             "cn-core-log-euc1-s3-accesslogs"
         ],
-        "additional_kms_cmks": []
+        "additional_kms_cmks": ["arn:aws:kms:eu-central-1:264034061693:key/2d16c006-7ff7-44fa-b1c8-72a6c030573d"]
     }
 }
