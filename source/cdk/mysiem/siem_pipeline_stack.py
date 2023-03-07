@@ -32,21 +32,29 @@ class SiemPipelineStack(cdk.Stack):
                                                 )
                                 )
         stage = SiemStage(self, "DeploySiemStageProd")
-        role = iam.Role.from_role_arn(self,
-                                      "Role",
-                                      "arn:aws:iam::755880545038:role/SiemPipelineStack-SiemPipelineStackPipelineRole891-95TTI5567PKO",
-                                      mutable=False
-                                      )
-        role.add_to_principal_policy(
-            iam.PolicyStatement(
-                actions=["ec2:*"],
-                resources=["*"]
-            )
-        )
-        role.add_to_principal_policy(
-            iam.PolicyStatement(
-                actions=["iam:ListRoles"],
-                resources=["arn:aws:iam::755880545038:role/aws-service-role/opensearchservice.amazonaws.com/*"]
-            )
-        )
+
+        self.setupRoles()
+
         pipeline.add_stage(stage)
+
+    def setupRoles(self):
+        roleBuild = iam.Role.from_role_arn(self, "BuildRole",
+                                           "arn:aws:iam::755880545038:role/SiemPipelineStack-SiemPipelineStackPipelineBuildSy-7XPJBUBX66V4"
+                                           )
+        rolePipeline = iam.Role.from_role_arn(self, "PipelineRole",
+                                              "arn:aws:iam::755880545038:role/SiemPipelineStack-SiemPipelineStackPipelineRole891-95TTI5567PKO"
+                                              )
+        roles = [rolePipeline, roleBuild]
+        for role in roles:
+            role.add_to_principal_policy(
+                iam.PolicyStatement(
+                    actions=["ec2:*"],
+                    resources=["*"]
+                )
+            )
+            role.add_to_principal_policy(
+                iam.PolicyStatement(
+                    actions=["iam:ListRoles"],
+                    resources=["arn:aws:iam::755880545038:role/aws-service-role/opensearchservice.amazonaws.com/*"]
+                )
+            )
