@@ -32,7 +32,11 @@ class SiemPipelineStack(cdk.Stack):
                                                 )
                                 )
         stage = SiemStage(self, "DeploySiemStageProd")
-        role = iam.Role.from_role_arn(self, "Role", "arn:aws:iam::755880545038:role/SiemPipelineStack-SiemPipelineStackPipelineRole891-95TTI5567PKO")
+        role = iam.Role.from_role_arn(self,
+                                      "Role",
+                                      "arn:aws:iam::755880545038:role/SiemPipelineStack-SiemPipelineStackPipelineRole891-95TTI5567PKO",
+                                      mutable=False
+                                      )
         role.add_to_principal_policy(
             iam.PolicyStatement(
                 actions=["ec2:*"],
