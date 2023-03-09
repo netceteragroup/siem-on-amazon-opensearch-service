@@ -18,6 +18,8 @@
             "snapshot": "cnn-core-log-euc1-s3-cnn-siem-snapshot",
             "geo": "cnn-core-log-euc1-s3-cnn-siem-geo"
         },
+        "s3_access_logs_bucket_name": "cn-core-log-euc1-s3-accesslogs",
+        "s3_access_logs_prefix": "/s3/accesslogs/cn-core-log-euc1-s3-siem",
         "kms_cmk_alias": "aes-siem-key",
         "organizations": {
             "org_id": "o-9jydjisnt6",
