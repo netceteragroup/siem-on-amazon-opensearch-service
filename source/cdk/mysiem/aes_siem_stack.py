@@ -394,6 +394,9 @@ class MyAesSiemStack(cdk.Stack):
             4, cdk.Fn.split(':', ct_role_arn.value_as_string))
         cfn_sl_aws_account = cdk.Fn.select(
             4, cdk.Fn.split(':', sl_role_arn.value_as_string))
+        # no access logs by default
+        s3bucket_name_access_logs = ''
+        s3bucket_access_logs_prefix = ''
 
         # organizations / multiaccount
         org_id = self.node.try_get_context('organizations').get('org_id')
@@ -427,6 +430,13 @@ class MyAesSiemStack(cdk.Stack):
         if not kms_cmk_alias:
             kms_cmk_alias = 'aes-siem-key'
             print('Using default key alais')
+
+        temp_acc_logs_bucket = self.node.try_get_context('s3_access_logs_bucket_name')
+        if temp_acc_logs_bucket:
+            s3bucket_name_access_logs = temp_acc_logs_bucket
+        temp_acc_logs_prefix = self.node.try_get_context('s3_access_logs_prefix')
+        if temp_acc_logs_prefix:
+            s3bucket_access_logs_prefix = temp_acc_logs_prefix
 
         ######################################################################
         # deploy VPC when context is defined as using VPC
@@ -587,12 +597,20 @@ class MyAesSiemStack(cdk.Stack):
             block_public_policy=True,
             restrict_public_buckets=True
         )
+
+        s3_access_logs_bucket = None
+        if len(s3bucket_name_access_logs) > 0:
+            s3_access_logs_bucket = aws_s3.Bucket(self, "AccessLogsBucket")
+
         s3_geo = aws_s3.Bucket(
             self, 'S3BucketForGeoip', block_public_access=block_pub,
             bucket_name=s3bucket_name_geo,
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             # removal_policy=cdk.RemovalPolicy.DESTROY,
+            # covers S3.9 requirement
+            server_access_logs_bucket=s3_access_logs_bucket,
+            server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-geo',
         )
 
         # create s3 bucket for log collector
@@ -602,6 +620,9 @@ class MyAesSiemStack(cdk.Stack):
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             # removal_policy=cdk.RemovalPolicy.DESTROY,
+            # covers S3.9 requirement
+            server_access_logs_bucket=s3_access_logs_bucket,
+            server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-log',
         )
 
         # create s3 bucket for aes snapshot
@@ -611,6 +632,9 @@ class MyAesSiemStack(cdk.Stack):
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             # removal_policy=cdk.RemovalPolicy.DESTROY,
+            # covers S3.9 requirement
+            server_access_logs_bucket=s3_access_logs_bucket,
+            server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-snapshot',
         )
 
         ######################################################################
