@@ -141,7 +141,7 @@ def create_logconfig(logtype):
     type_int = ['max_log_count', 'text_header_line_number',
                 'ignore_header_line_number']
     type_bool = ['via_cwl', 'via_firelens', 'ignore_container_stderr',
-                 'timestamp_nano']
+                 'timestamp_nano', 'via_hc']
     type_list = ['base.tags', 'container.image.tag', 'dns.answers',
                  'dns.header_flags', 'dns.resolved_ip', 'dns.type',
                  'ecs', 'static_ecs',
