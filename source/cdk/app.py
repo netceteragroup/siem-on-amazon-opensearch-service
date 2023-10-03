@@ -20,8 +20,15 @@ CDK_DEFAULT_REGION = os.getenv(
 region = os.environ.get("CDK_DEPLOY_REGION", CDK_DEFAULT_REGION)
 account = os.environ.get(
     "CDK_DEPLOY_ACCOUNT", os.environ["CDK_DEFAULT_ACCOUNT"])
+add_tags = os.environ.get("SIEM_ADD_TAGS", "")
 
 MyAesSiemStack(app, "aes-siem",
                description=f'SIEM on Amazon OpenSearch Service v{__version__}',
                env=cdk.Environment(account=account, region=region))
+
+for tag in add_tags.split(";"):
+    tag_kv = tag.split("=")
+    if len(tag_kv) == 2:
+        cdk.Tags.of(app).add(tag_kv[0], tag_kv[1])
+
 app.synth()
