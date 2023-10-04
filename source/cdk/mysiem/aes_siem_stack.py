@@ -1060,6 +1060,13 @@ class MyAesSiemStack(cdk.Stack):
                     connection=aws_ec2.Port.tcp(443),)
             sg_vpc_opt = sg_vpc_aes_siem.node.default_child.cfn_options
             sg_vpc_opt.deletion_policy = cdk.CfnDeletionPolicy.RETAIN
+
+            additional_sg_ingress_ip_ranges = self.node.try_get_context('additional_sg_ingress_ip_ranges')
+            if additional_sg_ingress_ip_ranges:
+                for ip_range in additional_sg_ingress_ip_ranges:
+                    sg_vpc_aes_siem.add_ingress_rule(
+                        peer=aws_ec2.Peer.ipv4(ip_range),
+                        connection=aws_ec2.Port.tcp(443),)
         else:
             sg_vpc_aes_siem = None
 
