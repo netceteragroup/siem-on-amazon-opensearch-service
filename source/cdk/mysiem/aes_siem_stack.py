@@ -905,6 +905,23 @@ class MyAesSiemStack(cdk.Stack):
         if len(s3bucket_name_access_logs) > 0:
             s3_access_logs_bucket = aws_s3.Bucket.from_bucket_name(self, "AccessLogsBucket", s3bucket_name_access_logs)
 
+        # hardcode lifecycle rule parameters for now
+        s3_lifecycle_rule = aws_s3.LifecycleRule(
+            id="all",
+            enabled=True,
+            transitions=[
+                aws_s3.Transition(
+                    storage_class=aws_s3.StorageClass.GLACIER_INSTANT_RETRIEVAL,
+                    transition_after=cdk.Duration.days(90),
+                ),
+                aws_s3.Transition(
+                    storage_class=aws_s3.StorageClass.GLACIER,
+                    transition_after=cdk.Duration.days(270),
+                ),
+            ],
+            expiration=cdk.Duration.days(365),
+        )
+
         s3_geo = aws_s3.Bucket(
             self, 'S3BucketForGeoip',
             bucket_name=s3bucket_name_geo,
@@ -912,6 +929,7 @@ class MyAesSiemStack(cdk.Stack):
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-geo',
+            lifecycle_rules=[s3_lifecycle_rule],
         )
 
         # create s3 bucket for log collector
@@ -922,6 +940,7 @@ class MyAesSiemStack(cdk.Stack):
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-log',
+            lifecycle_rules=[s3_lifecycle_rule],
         )
         s3_log.node.add_dependency(validated_resource)
 
@@ -944,6 +963,7 @@ class MyAesSiemStack(cdk.Stack):
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-snapshot',
+            lifecycle_rules=[s3_lifecycle_rule],
         )
 
         ######################################################################
