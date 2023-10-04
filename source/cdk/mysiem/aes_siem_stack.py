@@ -930,12 +930,13 @@ class MyAesSiemStack(cdk.Stack):
             server_access_logs_bucket=s3_access_logs_bucket,
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-geo',
             lifecycle_rules=[s3_lifecycle_rule],
+            versioned=False,
         )
 
         # create s3 bucket for log collector
         s3_log = aws_s3.Bucket(
             self, 'S3BucketForLog',
-            bucket_name=s3bucket_name_log, versioned=True,
+            bucket_name=s3bucket_name_log, versioned=False,
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
@@ -964,6 +965,7 @@ class MyAesSiemStack(cdk.Stack):
             server_access_logs_bucket=s3_access_logs_bucket,
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-snapshot',
             lifecycle_rules=[s3_lifecycle_rule],
+            versioned=False,
         )
 
         ######################################################################
