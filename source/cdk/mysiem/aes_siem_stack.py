@@ -891,7 +891,7 @@ class MyAesSiemStack(cdk.Stack):
             restrict_public_buckets=True
         )
         s3_geo = aws_s3.Bucket(
-            self, 'S3BucketForGeoip', block_public_access=block_pub,
+            self, 'S3BucketForGeoip',
             bucket_name=s3bucket_name_geo,
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
@@ -899,7 +899,7 @@ class MyAesSiemStack(cdk.Stack):
 
         # create s3 bucket for log collector
         s3_log = aws_s3.Bucket(
-            self, 'S3BucketForLog', block_public_access=block_pub,
+            self, 'S3BucketForLog',
             bucket_name=s3bucket_name_log, versioned=True,
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
@@ -919,7 +919,7 @@ class MyAesSiemStack(cdk.Stack):
 
         # create s3 bucket for aes snapshot
         s3_snapshot = aws_s3.Bucket(
-            self, 'S3BucketForSnapshot', block_public_access=block_pub,
+            self, 'S3BucketForSnapshot',
             bucket_name=s3bucket_name_snapshot,
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
