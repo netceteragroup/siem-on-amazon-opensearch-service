@@ -532,7 +532,10 @@ class MyAesSiemStack(cdk.Stack):
             4, cdk.Fn.split(':', sl_role_arn.value_as_string))
         # no access logs by default
         s3bucket_name_access_logs = ''
-        s3bucket_access_logs_prefix = ''
+        s3bucket_access_logs_prefix = None
+        s3bucket_access_logs_prefix_geo = None
+        s3bucket_access_logs_prefix_log = None
+        s3bucket_access_logs_prefix_snapshot = None
 
         # organizations / multiaccount
         org_id = self.node.try_get_context('organizations').get('org_id')
@@ -573,6 +576,12 @@ class MyAesSiemStack(cdk.Stack):
         temp_acc_logs_prefix = self.node.try_get_context('s3_access_logs_prefix')
         if temp_acc_logs_prefix:
             s3bucket_access_logs_prefix = temp_acc_logs_prefix
+        # access logs prefix must be set only if access logs bucket is defined,
+        # otherwise, CDK will configure to put access logs into the same bucket
+        if len(s3bucket_name_access_logs) > 0:
+            s3bucket_access_logs_prefix_geo = f'{s3bucket_access_logs_prefix}-geo'
+            s3bucket_access_logs_prefix_log = f'{s3bucket_access_logs_prefix}-log'
+            s3bucket_access_logs_prefix_snapshot = f'{s3bucket_access_logs_prefix}-snapshot'
 
         # vpc_type is 'new' or 'import' or None
         vpc_type = self.node.try_get_context('vpc_type')
@@ -928,7 +937,7 @@ class MyAesSiemStack(cdk.Stack):
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
-            server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-geo',
+            server_access_logs_prefix=s3bucket_access_logs_prefix_geo,
             lifecycle_rules=[s3_lifecycle_rule],
             versioned=False,
             object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
@@ -943,7 +952,7 @@ class MyAesSiemStack(cdk.Stack):
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
-            server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-log',
+            server_access_logs_prefix=s3bucket_access_logs_prefix_log,
             lifecycle_rules=[s3_lifecycle_rule],
             object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
             block_public_access=aws_s3.BlockPublicAccess.BLOCK_ACLS,
@@ -969,7 +978,7 @@ class MyAesSiemStack(cdk.Stack):
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
             server_access_logs_bucket=s3_access_logs_bucket,
-            server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-snapshot',
+            server_access_logs_prefix=s3bucket_access_logs_prefix_snapshot,
             lifecycle_rules=[s3_lifecycle_rule],
             versioned=False,
             object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
