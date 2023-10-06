@@ -955,6 +955,9 @@ class MyAesSiemStack(cdk.Stack):
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-geo',
             lifecycle_rules=[s3_lifecycle_rule],
             versioned=False,
+            object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+            block_public_access=aws_s3.BlockPublicAccess.BLOCK_ACLS,
+            access_control=aws_s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
         )
 
         # create s3 bucket for log collector
@@ -966,6 +969,9 @@ class MyAesSiemStack(cdk.Stack):
             server_access_logs_bucket=s3_access_logs_bucket,
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-log',
             lifecycle_rules=[s3_lifecycle_rule],
+            object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+            block_public_access=aws_s3.BlockPublicAccess.BLOCK_ACLS,
+            access_control=aws_s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
         )
         s3_log.node.add_dependency(validated_resource)
 
@@ -1025,6 +1031,9 @@ class MyAesSiemStack(cdk.Stack):
             server_access_logs_prefix=f'{s3bucket_access_logs_prefix}-snapshot',
             lifecycle_rules=[s3_lifecycle_rule],
             versioned=False,
+            object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+            block_public_access=aws_s3.BlockPublicAccess.BLOCK_ACLS,
+            access_control=aws_s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
         )
 
         ######################################################################
