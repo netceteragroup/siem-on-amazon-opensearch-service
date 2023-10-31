@@ -1119,7 +1119,7 @@ class MyAesSiemStack(cdk.Stack):
         # Security Group for VPC
         sg_vpc_noinbound_aes_siem = aws_ec2.CfnSecurityGroup(
             self, "AesSiemVpcNoinboundSecurityGroup58555CE0",
-            # group_name="aes-siem-noinbound-vpc-sg",
+            group_name="aes-siem-noinbound-vpc-sg",
             group_description="aes-siem/AesSiemVpcNoinboundSecurityGroup",
             vpc_id=validated_resource.get_att('vpc_id').to_string(),
         )
