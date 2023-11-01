@@ -1063,6 +1063,13 @@ class MyAesSiemStack(cdk.Stack):
             group_name="aes-siem-noinbound-vpc-sg",
             group_description="aes-siem/AesSiemVpcNoinboundSecurityGroup",
             vpc_id=validated_resource.get_att('vpc_id').to_string(),
+            security_group_egress=[aws_ec2.CfnSecurityGroup.EgressProperty(
+                ip_protocol="tcp",
+                cidr_ip="0.0.0.0/0",
+                description="Allow all outgoing TCP traffic",
+                from_port=0,
+                to_port=65535,
+            )],
         )
         sg_vpc_noinbound_aes_siem.cfn_options.condition = is_in_vpc
         sg_vpc_noinbound_aes_siem.apply_removal_policy(
