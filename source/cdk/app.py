@@ -54,13 +54,14 @@ siempipe = SiemPipelineStack(app, "SiemPipelineStack",
 siemstage = SiemStage(siempipe, "DeploySiemStageProd",
                       env=cdk.Environment(account=account, region=region))
 
-MyAesSiemStack(siemstage, "CNNAesSiemStack",
-               description=f'SIEM on Amazon OpenSearch Service v{__version__}',
-               env=cdk.Environment(account=account, region=region))
+mysiem = MyAesSiemStack(siemstage, "CNNAesSiemStack",
+                        description=f'SIEM on Amazon OpenSearch Service v{__version__}',
+                        env=cdk.Environment(account=account, region=region))
 
 for tag in add_tags.split(";"):
     tag_kv = tag.split("=")
     if len(tag_kv) == 2:
         cdk.Tags.of(app).add(tag_kv[0], tag_kv[1])
+        cdk.Tags.of(mysiem).add(tag_kv[0], tag_kv[1])
 
 app.synth()
