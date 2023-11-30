@@ -1120,14 +1120,13 @@ class MyAesSiemStack(cdk.Stack):
         sg_vpc_noinbound_aes_siem = aws_ec2.CfnSecurityGroup(
             self, "AesSiemVpcNoinboundSecurityGroup58555CE0",
             group_name="aes-siem-noinbound-vpc-sg",
-            group_description="aes-siem/AesSiemVpcNoinboundSecurityGroup",
+            # TODO: this description is required to comply with initial deployment
+            group_description="SiemPipelineStack/DeploySiemStageProd/CNNAesSiemStack/AesSiemVpcNoinboundSecurityGroup",
             vpc_id=validated_resource.get_att('vpc_id').to_string(),
             security_group_egress=[aws_ec2.CfnSecurityGroup.EgressProperty(
-                ip_protocol="tcp",
+                ip_protocol="-1",
                 cidr_ip="0.0.0.0/0",
-                description="Allow all outgoing TCP traffic",
-                from_port=0,
-                to_port=65535,
+                description="Allow all outbound traffic by default",
             )],
         )
         sg_vpc_noinbound_aes_siem.cfn_options.condition = is_in_vpc
